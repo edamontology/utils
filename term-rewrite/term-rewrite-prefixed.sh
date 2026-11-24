@@ -16,21 +16,19 @@ output_file=$(mktemp)
 cp "$input_file" "$output_file"
 
 # prefixes for replacement of topics and resources
-PREFIX_BIOIMAGING_TOPIC='rdf\:about\="http:\/\/edamontology\.org\/'
-PREFIX_BIOIMAGING_RESOURCE='rdf\:resource\="http:\/\/edamontology\.org\/'
+PREFIX_ABOUT='rdf\:about\="http:\/\/edamontology\.org\/'
+PREFIX_RESOURCE='rdf\:resource\="http:\/\/edamontology\.org\/'
 
 # Read the TSV file line by line
-# while IFS=$'\t' read -r regex replacement; do
-while IFS=$'	' read -r regex replacement; do
+while IFS=$'\t' read -r regex replacement; do
     # Skip empty lines or comments
     [[ -z "$regex" || "$regex" =~ ^# ]] && continue
     # echo "regex: $regex"
     # echo "replacement: $replacement"
     
     # Use sed to perform the replacement
-    # sed -i "s/$regex/$replacement/g" "$output_file"
-    sed -i "s/$PREFIX_BIOIMAGING_TOPIC$regex/$PREFIX_BIOIMAGING_TOPIC$replacement/g" "$output_file"
-    sed -i "s/$PREFIX_BIOIMAGING_RESOURCE$regex/$PREFIX_BIOIMAGING_RESOURCE$replacement/g" "$output_file"
+    sed -i -e "s/$PREFIX_ABOUT$regex/$PREFIX_ABOUT$replacement/g" "$output_file"
+    sed -i -e "s/$PREFIX_RESOURCE$regex/$PREFIX_RESOURCE$replacement/g" "$output_file"
 done < "$replacement_tsv"
 
 # Output the modified file
