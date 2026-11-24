@@ -21,7 +21,7 @@ while IFS=$'\t' read -r regex replacement; do
     [[ -z "$regex" || "$regex" =~ ^# ]] && continue
     
     # Use sed to perform the replacement
-    sed -i "s/$regex/$replacement/g" "$output_file"
+    sed -i  -e "N; s/$regex/$replacement/g" "$output_file"
 done < "$replacement_tsv"
 
 # Output the modified file
